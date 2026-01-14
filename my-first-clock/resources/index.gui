@@ -1,13 +1,19 @@
 <svg>
   <rect id="background" />
 
+  <!-- Battery indicator dot -->
+  <circle id="batteryDot" class="batteryDot batteryGreen" cx="90%" cy="10%" r="4" />
+
   <!-- Time -->
   <text id="timeLabel" class="time" x="50%" y="40%" text-anchor="middle" text-length="10">00:00</text>
 
   <!-- Date -->
   <text id="dateLabel" class="date" x="50%" y="55%" text-anchor="middle" text-length="20">Mon Jan 1</text>
 
+  <!-- Separator rectangle (between date and heart rate) -->
+  <rect id="separator" class="separator" x="100" y="185" width="100" height="2" />
+
   <!-- Heart Rate -->
-  <text id="heartRateLabel" class="heartRate" x="50%" y="70%" text-anchor="middle" text-length="10">--
+  <text id="heartRateLabel" class="heartRate" x="50%" y="75%" text-anchor="middle" text-length="10">--
     bpm</text>
 </svg>

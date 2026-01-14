@@ -25,3 +25,6 @@ Thumbs.db
 # Fitbit specific
 *.fba
 
+# Documentation
+_doc/
+

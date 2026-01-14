@@ -22,6 +22,10 @@
   text-length: 20;
 }
 
+.separator {
+  fill: white;
+}
+
 .heartRate {
   font-size: 28;
   font-family: System-Regular;
@@ -29,4 +33,20 @@
   fill: #ff4444;
   text-anchor: middle;
   text-length: 10;
+}
+
+.batteryDot {
+  fill: green;
+}
+
+.batteryGreen {
+  fill: #00ff00;
+}
+
+.batteryYellow {
+  fill: #ffff00;
+}
+
+.batteryRed {
+  fill: #ff0000;
 }
