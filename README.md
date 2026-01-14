@@ -8,7 +8,7 @@ Vital is a sleek, minimal watchface designed for the Fitbit Versa 2. It displays
 
 <div align="center">
 
-![Vital Watchface](static/watch%20face.png)
+![Vital Watchface](src/static/watch%20face.png)
 
 </div>
 
