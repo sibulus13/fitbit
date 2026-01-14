@@ -1,12 +1,6 @@
 import clock from "clock";
 import document from "document";
 import { HeartRateSensor } from "heart-rate";
-import { display } from "display";
-
-// Keep screen on
-display.addEventListener('change', function () {
-    if (!display.on) display.on = true;
-});
 
 // Get UI elements
 const timeLabel = document.getElementById("timeLabel");

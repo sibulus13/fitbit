@@ -38,7 +38,6 @@ Vital is a sleek, minimal watchface designed for the Fitbit Versa 2. It displays
 
 - **Minimalist Layout** - Clean, uncluttered interface
 - **High Contrast** - Black background with white/gray text for optimal readability
-- **Always-On Display** - Screen stays active for continuous viewing
 - **Optimized Typography** - System fonts with carefully chosen sizes and weights
 
 ## Technical Details
