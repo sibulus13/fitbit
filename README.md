@@ -19,6 +19,7 @@ Vital is a sleek, minimal watchface designed for the Fitbit Versa 2. It displays
 - **Large Digital Time** - Bold white time display (HH:MM format) for easy reading
 - **Date Display** - Current date shown in abbreviated format (e.g., "Mon Jan 14")
 - **Visual Separator** - Subtle gray divider line between date and metrics
+- **Barometric Pressure** - Atmospheric pressure display in the top banner (tappable to toggle on/off)
 
 ### Health Metrics
 
@@ -38,6 +39,7 @@ Vital is a sleek, minimal watchface designed for the Fitbit Versa 2. It displays
 - **SDK Version**: 4.0.0-pre.4
 - **Build Target**: mira
 - **Permissions**: access_heart_rate
+- **Interactive**: Tap anywhere on the watchface to toggle barometric pressure display
 
 ## Installation
 

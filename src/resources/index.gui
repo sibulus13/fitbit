@@ -1,6 +1,10 @@
 <svg>
   <rect id="background" />
 
+  <!-- Top Banner - Clickable area -->
+  <rect id="bannerClickArea" class="bannerClickArea" x="10%" y="8%" width="80%" height="12%" />
+  <text id="bannerLabel" class="banner" x="50%" y="15%" text-anchor="middle" text-length="30">--</text>
+
   <!-- Time -->
   <text id="timeLabel" class="time" x="50%" y="40%" text-anchor="middle" text-length="10">00:00</text>
 
@@ -13,4 +17,7 @@
   <!-- Heart Rate -->
   <text id="heartRateLabel" class="heartRate" x="50%" y="75%" text-anchor="middle" text-length="10">--
     bpm</text>
+
+  <!-- Full-screen invisible clickable overlay (placed last so it's on top) -->
+  <rect id="clickOverlay" class="clickOverlay" x="0" y="0" width="100%" height="100%" />
 </svg>

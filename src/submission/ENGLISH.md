@@ -17,6 +17,7 @@ Key Features:
 - Large, bold digital time display for easy reading
 - Current date in abbreviated format
 - Real-time heart rate monitoring
+- Barometric pressure display (tap to toggle on/off)
 - Clean, minimalist design with high contrast
 
 Perfect for users who want essential information at a glance without visual clutter.
@@ -27,3 +28,4 @@ Versioning
 1.0.0 - Initial Release
 1.0.1 - Repo housekeeping
 1.0.2 - Removed battery indicator - requires companion app which just increases battery drain
+1.0.3 - Added barometric pressure display with tap-to-toggle functionality

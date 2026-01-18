@@ -34,3 +34,23 @@
   text-anchor: middle;
   text-length: 10;
 }
+
+.banner {
+  font-size: 20;
+  font-family: System-Regular;
+  font-weight: regular;
+  fill: #888888;
+  text-anchor: middle;
+  text-length: 30;
+}
+
+.bannerClickArea {
+  fill: #000000;
+  opacity: 0.01;
+}
+
+.clickOverlay {
+  fill: #000000;
+  opacity: 0;
+  pointer-events: all;
+}
