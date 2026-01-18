@@ -1,8 +1,7 @@
 <svg>
   <rect id="background" />
 
-  <!-- Top Banner - Clickable area -->
-  <rect id="bannerClickArea" class="bannerClickArea" x="10%" y="8%" width="80%" height="12%" />
+  <!-- Top Banner -->
   <text id="bannerLabel" class="banner" x="50%" y="15%" text-anchor="middle" text-length="30">--</text>
 
   <!-- Time -->

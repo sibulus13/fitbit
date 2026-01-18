@@ -44,11 +44,6 @@
   text-length: 30;
 }
 
-.bannerClickArea {
-  fill: #000000;
-  opacity: 0.01;
-}
-
 .clickOverlay {
   fill: #000000;
   opacity: 0;

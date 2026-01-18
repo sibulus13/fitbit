@@ -3,99 +3,106 @@ import document from "document";
 import { HeartRateSensor } from "heart-rate";
 import { Barometer } from "barometer";
 
-// Banner visibility toggle - on by default
-let bannerVisible = true;
+// Constants
+const BAROMETER_FREQ_HIGH = 100; // Hz - for fast initial reading
+const BAROMETER_FREQ_LOW = 1; // Hz - for battery efficiency
+const PRESSURE_CONVERSION = 100; // Pascals to hectopascals
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-// Get UI elements
+// State
+let bannerVisible = true;
+let barometer = null;
+let barometerInitialized = false;
+
+// UI elements
 const timeLabel = document.getElementById("timeLabel");
 const dateLabel = document.getElementById("dateLabel");
 const heartRateLabel = document.getElementById("heartRateLabel");
 const bannerLabel = document.getElementById("bannerLabel");
-const bannerClickArea = document.getElementById("bannerClickArea");
 const clickOverlay = document.getElementById("clickOverlay");
-const background = document.getElementById("background");
 
-// Initialize barometer
-let barometer = null;
-let barometerInitialized = false;
+// Helper: Update banner with pressure value
+function updatePressureDisplay(pressure) {
+    if (bannerVisible && bannerLabel && pressure) {
+        bannerLabel.text = `${(pressure / PRESSURE_CONVERSION).toFixed(0)} hPa`;
+    }
+}
 
-function initializeBarometer() {
+// Sensor management helpers
+function createBarometer(frequency) {
+    const sensor = new Barometer({ frequency });
+    sensor.onreading = () => updatePressureDisplay(sensor.pressure);
+    sensor.onerror = () => {
+        if (bannerLabel) bannerLabel.text = "Error";
+    };
+    return sensor;
+}
+
+function stopBarometer() {
     if (barometer) {
         barometer.stop();
         barometer = null;
     }
+}
 
+function startBarometer(frequency) {
+    stopBarometer();
+    barometer = createBarometer(frequency);
+    barometer.start();
+    return barometer;
+}
+
+// Initialize barometer with adaptive frequency
+function initializeBarometer() {
     if (!bannerVisible || !bannerLabel) return;
 
     barometerInitialized = false;
-    // Start at 100 Hz (max) for fast initial reading
-    barometer = new Barometer({ frequency: 100 });
-    barometer.onreading = () => {
-        if (bannerVisible && bannerLabel && barometer.pressure) {
-            bannerLabel.text = `${(barometer.pressure / 100).toFixed(0)} hPa`;
 
-            // After first reading, reduce to 1 Hz to save battery
-            if (!barometerInitialized) {
-                barometerInitialized = true;
-                barometer.stop();
-                barometer = new Barometer({ frequency: 1 });
-                barometer.onreading = () => {
-                    if (bannerVisible && bannerLabel && barometer.pressure) {
-                        bannerLabel.text = `${(barometer.pressure / 100).toFixed(0)} hPa`;
-                    }
-                };
-                barometer.onerror = () => {
-                    if (bannerLabel) bannerLabel.text = "Error";
-                };
-                barometer.start();
-            }
+    // Start at high frequency for fast initial reading
+    const highFreqBarometer = startBarometer(BAROMETER_FREQ_HIGH);
+
+    // Override onreading to handle frequency transition after first reading
+    highFreqBarometer.onreading = () => {
+        updatePressureDisplay(highFreqBarometer.pressure);
+
+        // After first reading, reduce to low frequency to save battery
+        if (!barometerInitialized && highFreqBarometer.pressure) {
+            barometerInitialized = true;
+            startBarometer(BAROMETER_FREQ_LOW);
         }
     };
-    barometer.onerror = () => {
-        if (bannerLabel) bannerLabel.text = "Error";
-    };
-    barometer.start();
 }
 
-// Toggle banner visibility when watchface is tapped
-const toggleBarometer = function (evt) {
+// Toggle banner visibility
+function toggleBarometer() {
     bannerVisible = !bannerVisible;
 
     if (bannerVisible) {
         initializeBarometer();
     } else {
         if (bannerLabel) bannerLabel.text = "";
-        if (barometer) {
-            barometer.stop();
-            barometer = null;
-        }
+        stopBarometer();
     }
-};
+}
 
-// Make the entire watchface clickable
+// Make entire watchface clickable
 if (clickOverlay) clickOverlay.onclick = toggleBarometer;
-if (background) background.onclick = toggleBarometer;
-if (bannerClickArea) bannerClickArea.onclick = toggleBarometer;
-if (timeLabel) timeLabel.onclick = toggleBarometer;
-if (dateLabel) dateLabel.onclick = toggleBarometer;
 
 // Update clock every minute
 clock.granularity = "minutes";
 
-// Format time
-function formatTime(date) {
-    let hours = date.getHours();
-    let mins = date.getMinutes();
-    hours = hours < 10 ? "0" + hours : hours;
-    mins = mins < 10 ? "0" + mins : mins;
-    return `${hours}:${mins}`;
+// Format helpers
+function padZero(num) {
+    return num < 10 ? `0${num}` : String(num);
 }
 
-// Format date
+function formatTime(date) {
+    return `${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
+}
+
 function formatDate(date) {
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    return `${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`;
+    return `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}`;
 }
 
 // Initialize barometer on startup (banner visible by default)
@@ -103,14 +110,16 @@ initializeBarometer();
 
 // Update time and date
 clock.ontick = (evt) => {
-    const today = evt.date;
-    timeLabel.text = formatTime(today);
-    dateLabel.text = formatDate(today);
+    const date = evt.date;
+    if (timeLabel) timeLabel.text = formatTime(date);
+    if (dateLabel) dateLabel.text = formatDate(date);
 };
 
-// Heart rate sensor
+// Initialize heart rate sensor
 const hrm = new HeartRateSensor();
 hrm.onreading = () => {
-    heartRateLabel.text = `${hrm.heartRate} bpm`;
+    if (heartRateLabel && hrm.heartRate) {
+        heartRateLabel.text = `${hrm.heartRate} bpm`;
+    }
 };
 hrm.start();
